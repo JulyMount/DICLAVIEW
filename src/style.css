@@ -1,0 +1,275 @@
+/* Reset e Estilos Globais */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabeçalho e Barra de Ferramentas */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #333;
+}
+
+.logo h1 {
+  font-size: 18px;
+  color: #00bcd4;
+  margin: 0;
+}
+
+.logo span {
+  font-size: 11px;
+  color: #aaa;
+  font-style: italic;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tool-btn, .file-label {
+  background-color: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.tool-btn:hover, .file-label:hover {
+  background-color: #3d3d3d;
+  border-color: #00bcd4;
+}
+
+.tool-btn.active {
+  background-color: #00bcd4;
+  color: #000;
+  font-weight: bold;
+}
+
+.tool-btn.danger {
+  border-color: #f44336;
+  color: #ff7961;
+}
+
+.tool-btn.danger:hover {
+  background-color: #f44336;
+  color: #fff;
+}
+
+/* Menu Dropdown de Medição */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #1e1e1e;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+  border-radius: 4px;
+  z-index: 100;
+  border: 1px solid #333;
+}
+
+.dropdown-content button {
+  color: #fff;
+  padding: 8px 12px;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #333;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Área Central do Visualizador */
+.viewer-container {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #181818;
+  border-right: 1px solid #333;
+  padding: 15px;
+}
+
+.sidebar h3 {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.sidebar .empty-msg {
+  font-size: 13px;
+  color: #555;
+}
+
+/* Contentor e Elemento DICOM */
+.viewport-wrapper {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  background-color: #000;
+  overflow: hidden;
+}
+
+#dicom-viewport {
+  width: 100%;
+  height: 100%;
+}
+
+/* Barra de Rolagem Lateral Vertical Atualizada */
+.scroll-bar-container {
+  position: absolute;
+  right: 10px;
+  top: 10%;
+  height: 80%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+
+#slice-slider {
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 10px;
+  height: 100%;
+  cursor: pointer;
+  accent-color: #00bcd4;
+}
+
+/* Overlays de Texto sobre a Imagem DICOM */
+.overlay {
+  position: absolute;
+  color: #00ffcc;
+  font-family: monospace;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 5;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Estilos da Lista de Séries */
+.series-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: #242424;
+  border: 1px solid #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.series-item:hover {
+  background-color: #333;
+  border-color: #555;
+}
+
+.series-item.active {
+  border-color: #00bcd4;
+  background-color: #11353a;
+}
+
+.series-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Elemento da Miniatura */
+.series-thumbnail {
+  width: 60px;
+  height: 60px;
+  background-color: #000000;
+  border-radius: 4px;
+  border: 1px solid #444;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Informações da Série */
+.series-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.series-count {
+  font-size: 11px;
+  color: #00bcd4;
+  margin-top: 4px;
+}
+
+/* Destaque para ferramenta ativa na barra de ferramentas */
+.toolbar .btn.active,
+.toolbar .dropdown.active > button {
+  background-color: #00bcd4 !important;
+  color: #0d1117 !important;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+  border-color: #00bcd4 !important;
+}
+
+/* Destaque do item ativo dentro do menu suspenso (dropdown) */
+.dropdown-content button.active {
+  background-color: #00bcd4 !important;
+  color: #0d1117 !important;
+  font-weight: bold;
+}
+
+/* Remove o contorno padrão do navegador ao focar nos botões */
+.toolbar button:focus {
+  outline: none;
+}
+
+.overlay.top-left { top: 10px; left: 10px; }
+.overlay.top-right { top: 10px; right: 35px; text-align: right; }
+.overlay.bottom-left { bottom: 10px; left: 10px; }
+.overlay.bottom-right { bottom: 10px; right: 35px; text-align: right; }

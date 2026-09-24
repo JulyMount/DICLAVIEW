@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dicla View - Visualizador DICOM</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="logo">
+        <h1>DICLA VIEW</h1>
+        <span>"Só não vê quem não quer"</span>
+      </div>
+
+      <div class="toolbar">
+        <button class="tool-btn active" id="btn-janela">☀️ Janela / Nível</button>
+        <button class="tool-btn" id="btn-zoom">🔍 Zoom</button>
+        <button class="tool-btn" id="btn-pan">✋ Pan</button>
+
+        <!-- Menu de Medição -->
+        <div class="dropdown">
+          <button class="tool-btn" id="btn-medir">📏 Medir ▼</button>
+          <div class="dropdown-content">
+            <button id="btn-medir-linha">📏 Linha</button>
+            <button id="btn-medir-circulo">⭕ Círculo</button>
+          </div>
+        </div>
+
+        <button class="tool-btn" id="btn-caneta">✏️ Caneta</button>
+        <button class="tool-btn danger" id="btn-limpar">🗑️ Limpar</button>
+
+        <label for="dicom-input" class="file-label">📁 Abrir DICOM / ZIP</label>
+        <input type="file" id="dicom-input" multiple accept=".dcm,.zip,image/*" hidden />
+      </div>
+    </header>
+
+    <main class="viewer-container">
+      <aside class="sidebar">
+        <h3>SÉRIES DO EXAME</h3>
+        <p class="empty-msg">Nenhum exame carregado</p>
+      </aside>
+
+      <section class="viewport-wrapper">
+        <div id="dicom-viewport"></div>
+
+        <!-- Barra de Rolagem Lateral Vertical -->
+        <div class="scroll-bar-container">
+          <input type="range" id="slice-slider" min="0" max="0" value="0" step="1" />
+        </div>
+
+        <!-- Overlays de informação -->
+        <div class="overlay top-left">
+          PACIENTE: DEMO<br />
+          ID: 000123
+        </div>
+        <div class="overlay top-right">
+          Nenhum exame carregado
+        </div>
+        <div class="overlay bottom-left">
+          W: 400 L: 40
+        </div>
+        <div class="overlay bottom-right">
+          Dicla View PWA
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
