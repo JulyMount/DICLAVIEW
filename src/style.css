@@ -269,6 +269,22 @@ body {
   outline: none;
 }
 
+/* Estilos do Modo Cine */
+#btn-cine.playing {
+  background-color: #ff9800 !important;
+  color: #000000 !important;
+  border-color: #ff9800 !important;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.6);
+}
+
+#cine-fps {
+  padding: 6px 8px;
+  cursor: pointer;
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
 .overlay.top-left { top: 10px; left: 10px; }
 .overlay.top-right { top: 10px; right: 35px; text-align: right; }
 .overlay.bottom-left { bottom: 10px; left: 10px; }

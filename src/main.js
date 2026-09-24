@@ -13,6 +13,10 @@ import dicomImageLoaderModule from '@cornerstonejs/dicom-image-loader';
 import dicomParser from 'dicom-parser';
 import JSZip from 'jszip';
 
+let isCinePlaying = false;
+let cineInterval = null;
+let cineFps = 20;
+
 const dicomImageLoader = dicomImageLoaderModule.default || dicomImageLoaderModule;
 
 let renderingEngine;
@@ -39,6 +43,7 @@ async function startApp() {
   setupTools(renderingEngineId, viewportId);
   setupToolbarEvents();
   setupSliderEvents(element);
+  setupCineEvents();
 
   document.getElementById('dicom-input').addEventListener('change', handleFileSelect);
 }
@@ -385,6 +390,8 @@ function setupSliderEvents(viewportElement) {
     }
   });
 
+  slider.addEventListener('mousedown', () => stopCine());
+
   // Atualiza fatias e W/L ao mudar de imagem
   viewportElement.addEventListener(Enums.Events.STACK_NEW_IMAGE, (evt) => {
     const { imageIdIndex } = evt.detail;
@@ -400,6 +407,7 @@ function setupSliderEvents(viewportElement) {
 }
 
 async function loadSeries(series) {
+    stopCine();
   activeImageIds = series.items.map((item) => item.imageId);
 
   const viewport = renderingEngine.getViewport(viewportId);
@@ -443,6 +451,65 @@ function updateOverlay(htmlContent) {
   const topRightOverlay = document.querySelector('.overlay.top-right');
   if (topRightOverlay) {
     topRightOverlay.innerHTML = htmlContent;
+  }
+}
+
+function setupCineEvents() {
+  const btnCine = document.getElementById('btn-cine');
+  const selectFps = document.getElementById('cine-fps');
+
+  btnCine?.addEventListener('click', toggleCine);
+
+  selectFps?.addEventListener('change', (e) => {
+    cineFps = parseInt(e.target.value, 10);
+    if (isCinePlaying) {
+      startCine(); // Reinicia a reprodução com a nova velocidade
+    }
+  });
+}
+
+function toggleCine() {
+  if (isCinePlaying) {
+    stopCine();
+  } else {
+    startCine();
+  }
+}
+
+function startCine() {
+  if (activeImageIds.length <= 1) return;
+
+  stopCine(); // Garante que limpa qualquer loop pré-existente
+  isCinePlaying = true;
+
+  const btnCine = document.getElementById('btn-cine');
+  if (btnCine) {
+    btnCine.classList.add('playing');
+    btnCine.innerHTML = '⏸️ Pausa';
+  }
+
+  cineInterval = setInterval(() => {
+    const viewport = renderingEngine.getViewport(viewportId);
+    if (!viewport || activeImageIds.length === 0) return;
+
+    const currentIndex = viewport.getCurrentImageIdIndex();
+    const nextIndex = (currentIndex + 1) % activeImageIds.length; // Ciclo contínuo
+
+    viewport.setImageIdIndex(nextIndex);
+  }, 1000 / cineFps);
+}
+
+function stopCine() {
+  isCinePlaying = false;
+  if (cineInterval) {
+    clearInterval(cineInterval);
+    cineInterval = null;
+  }
+
+  const btnCine = document.getElementById('btn-cine');
+  if (btnCine) {
+    btnCine.classList.remove('playing');
+    btnCine.innerHTML = '▶️ Cine';
   }
 }
 
