@@ -51,11 +51,16 @@
       </aside>
 
       <section class="viewport-wrapper">
-        <div id="dicom-viewport"></div>
-
-        <!-- Barra de Rolagem Lateral Vertical -->
-        <div class="scroll-bar-container">
-          <input type="range" id="slice-slider" min="0" max="0" value="0" step="1" />
+        <div id="mpr-container" class="mpr-grid">
+          <div id="viewport-axial" class="mpr-viewport">
+            <span class="viewport-label">AXIAL</span>
+          </div>
+          <div id="viewport-sagittal" class="mpr-viewport">
+            <span class="viewport-label">SAGITTAL</span>
+          </div>
+          <div id="viewport-coronal" class="mpr-viewport">
+            <span class="viewport-label">CORONAL</span>
+          </div>
         </div>
 
         <!-- Overlays de informação -->
@@ -70,7 +75,7 @@
           W: 400 L: 40
         </div>
         <div class="overlay bottom-right">
-          Dicla View PWA
+          Dicla View MPR
         </div>
       </section>
     </main>

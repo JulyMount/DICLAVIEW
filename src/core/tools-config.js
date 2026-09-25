@@ -13,9 +13,9 @@ import {
 } from '@cornerstonejs/tools';
 import { getRenderingEngine } from '@cornerstonejs/core';
 
-export const toolGroupId = 'DICLA_TOOL_GROUP';
+export const toolGroupId = 'DICLA_MPR_TOOL_GROUP';
 
-export function setupTools(renderingEngineId, viewportId) {
+export function setupTools(renderingEngineId, viewportIds) {
   addTool(WindowLevelTool);
   addTool(PanTool);
   addTool(ZoomTool);
@@ -32,48 +32,25 @@ export function setupTools(renderingEngineId, viewportId) {
   toolGroup.addTool(WindowLevelTool.toolName);
   toolGroup.addTool(PanTool.toolName);
   toolGroup.addTool(ZoomTool.toolName);
-  
-  // Suavização do scroll (sensibilidade ajustada via debounce)
-  toolGroup.addTool(StackScrollMouseWheelTool.toolName, {
-    debounceTime: 40,
-  });
-
+  toolGroup.addTool(StackScrollMouseWheelTool.toolName, { debounceTime: 40 });
   toolGroup.addTool(LengthTool.toolName);
   toolGroup.addTool(CircleROITool.toolName);
   toolGroup.addTool(PlanarFreehandROITool.toolName);
 
-  toolGroup.addViewport(viewportId, renderingEngineId);
+  // Associa os 3 viewports MPR ao mesmo grupo de ferramentas
+  viewportIds.forEach((vId) => {
+    toolGroup.addViewport(vId, renderingEngineId);
+  });
 
-  // Ativar Scroll na Roda do Rato
   toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
-
-  // Botão Esquerdo do Rato Padrão: Janela/Nível
   toolGroup.setToolActive(WindowLevelTool.toolName, {
     bindings: [{ mouseButton: ToolsEnums.MouseBindings.Primary }],
   });
-
-  // Botão Direito: Zoom
   toolGroup.setToolActive(ZoomTool.toolName, {
     bindings: [{ mouseButton: ToolsEnums.MouseBindings.Secondary }],
   });
-
-  // Botão do Meio: Pan
   toolGroup.setToolActive(PanTool.toolName, {
     bindings: [{ mouseButton: ToolsEnums.MouseBindings.Auxiliary }],
-  });
-
-  // Listener para apagar anotação individual com tecla Delete / Backspace
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Delete' || e.key === 'Backspace') {
-      const selectedUIDs = annotation.selection.getAnnotationsSelected();
-      if (selectedUIDs && selectedUIDs.length) {
-        selectedUIDs.forEach((uid) => annotation.state.removeAnnotation(uid));
-        const renderingEngine = getRenderingEngine(renderingEngineId);
-        if (renderingEngine) {
-          renderingEngine.renderViewports([viewportId]);
-        }
-      }
-    }
   });
 }
 
@@ -90,19 +67,17 @@ export function setActiveTool(toolName) {
     PlanarFreehandROITool.toolName,
   ];
 
-  toolsToReset.forEach((t) => {
-    toolGroup.setToolPassive(t);
-  });
+  toolsToReset.forEach((t) => toolGroup.setToolPassive(t));
 
   toolGroup.setToolActive(toolName, {
     bindings: [{ mouseButton: ToolsEnums.MouseBindings.Primary }],
   });
 }
 
-export function clearAllAnnotations(renderingEngineId, viewportId) {
+export function clearAllAnnotations(renderingEngineId, viewportIds) {
   annotation.state.removeAllAnnotations();
   const renderingEngine = getRenderingEngine(renderingEngineId);
   if (renderingEngine) {
-    renderingEngine.renderViewports([viewportId]);
+    renderingEngine.renderViewports(viewportIds);
   }
 }
