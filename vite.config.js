@@ -7,23 +7,20 @@ export default defineConfig({
     wasm(),
     topLevelAwait()
   ],
+  optimizeDeps: {
+    exclude: ['@icr/polyseg-wasm']
+  },
   worker: {
     plugins: () => [
       wasm(),
       topLevelAwait()
-    ],
-    // Força o empacotador dos workers a ignorar a variável do WASM
-    rollupOptions: {
-      external: ['a']
-    }
+    ]
   },
   build: {
     target: 'esnext',
     commonjsOptions: {
-      ignore: ['@icr/polyseg-wasm']
-    },
-    rollupOptions: {
-      external: ['a']
+      // Impede que o analisador CommonJS tente ler ficheiros .wasm como JavaScript
+      exclude: ['**/*.wasm', '**/node_modules/@icr/polyseg-wasm/**']
     }
   },
   server: {
