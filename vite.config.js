@@ -1,29 +1,21 @@
 import { defineConfig } from 'vite';
 import wasm from 'vite-plugin-wasm';
-import topLevelAwait from 'vite-plugin-top-level-await';
 
 export default defineConfig({
   plugins: [
-    wasm(),
-    topLevelAwait()
+    wasm()
   ],
   optimizeDeps: {
     exclude: ['@icr/polyseg-wasm']
   },
   worker: {
+    format: 'es',
     plugins: () => [
-      wasm(),
-      topLevelAwait()
-    ],
-    rollupOptions: {
-      external: (id) => id === 'a' || id.includes('polyseg-wasm')
-    }
+      wasm()
+    ]
   },
   build: {
-    target: 'esnext',
-    rollupOptions: {
-      external: (id) => id === 'a' || id.includes('polyseg-wasm')
-    }
+    target: 'esnext'
   },
   server: {
     headers: {
