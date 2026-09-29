@@ -7,6 +7,8 @@ export default defineConfig({
     wasm(),
     topLevelAwait()
   ],
+  // Trata ficheiros .wasm como assets estáticos em vez de módulos JS
+  assetsInclude: ['**/*.wasm'],
   optimizeDeps: {
     exclude: ['@icr/polyseg-wasm']
   },
@@ -17,11 +19,7 @@ export default defineConfig({
     ]
   },
   build: {
-    target: 'esnext',
-    commonjsOptions: {
-      // Impede que o analisador CommonJS tente ler ficheiros .wasm como JavaScript
-      exclude: ['**/*.wasm', '**/node_modules/@icr/polyseg-wasm/**']
-    }
+    target: 'esnext'
   },
   server: {
     headers: {
