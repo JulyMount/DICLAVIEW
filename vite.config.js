@@ -7,8 +7,6 @@ export default defineConfig({
     wasm(),
     topLevelAwait()
   ],
-  // Trata ficheiros .wasm como assets estáticos em vez de módulos JS
-  assetsInclude: ['**/*.wasm'],
   optimizeDeps: {
     exclude: ['@icr/polyseg-wasm']
   },
@@ -16,10 +14,16 @@ export default defineConfig({
     plugins: () => [
       wasm(),
       topLevelAwait()
-    ]
+    ],
+    rollupOptions: {
+      external: (id) => id === 'a' || id.includes('polyseg-wasm')
+    }
   },
   build: {
-    target: 'esnext'
+    target: 'esnext',
+    rollupOptions: {
+      external: (id) => id === 'a' || id.includes('polyseg-wasm')
+    }
   },
   server: {
     headers: {
