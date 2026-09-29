@@ -7,6 +7,9 @@ export default defineConfig({
     wasm(),
     topLevelAwait()
   ],
+  optimizeDeps: {
+    exclude: ['@icr/polyseg-wasm']
+  },
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
