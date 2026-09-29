@@ -7,7 +7,6 @@ export default defineConfig({
     wasm(),
     topLevelAwait()
   ],
-  // Aplica os plugins especificamente aos Web Workers do Cornerstone
   worker: {
     plugins: () => [
       wasm(),
@@ -15,11 +14,13 @@ export default defineConfig({
     ]
   },
   build: {
-    // Necessário para suportar WebAssembly moderno e Top-Level Await
     target: 'esnext',
-    // Impede que o conversor padrão do Vite tente processar o Wasm de forma errada
     commonjsOptions: {
       ignore: ['@icr/polyseg-wasm']
+    },
+    // Força o empacotador a ignorar dependências internas do WASM
+    rollupOptions: {
+      external: ['a']
     }
   },
   server: {
