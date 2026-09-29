@@ -6,16 +6,22 @@ export default defineConfig({
     wasm()
   ],
   optimizeDeps: {
-    exclude: ['@icr/polyseg-wasm']
+    exclude: ['@icr/polyseg-wasm', '@cornerstonejs/dicom-image-loader']
   },
   worker: {
     format: 'es',
     plugins: () => [
       wasm()
-    ]
+    ],
+    rollupOptions: {
+      external: ['@icr/polyseg-wasm', 'a']
+    }
   },
   build: {
-    target: 'esnext'
+    target: 'esnext',
+    rollupOptions: {
+      external: ['@icr/polyseg-wasm', 'a']
+    }
   },
   server: {
     headers: {
