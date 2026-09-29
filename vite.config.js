@@ -11,14 +11,17 @@ export default defineConfig({
     plugins: () => [
       wasm(),
       topLevelAwait()
-    ]
+    ],
+    // Força o empacotador dos workers a ignorar a variável do WASM
+    rollupOptions: {
+      external: ['a']
+    }
   },
   build: {
     target: 'esnext',
     commonjsOptions: {
       ignore: ['@icr/polyseg-wasm']
     },
-    // Força o empacotador a ignorar dependências internas do WASM
     rollupOptions: {
       external: ['a']
     }
